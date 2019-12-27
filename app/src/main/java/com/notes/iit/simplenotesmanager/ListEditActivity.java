@@ -96,13 +96,20 @@ public class ListEditActivity extends AppCompatActivity {
                 Date date=new Date();
                 SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
                 String currentDateTime=simpleDateFormat.format(date);
-                byte[] image = imageViewToByte(thumbImage);
+                byte[] image;
+                if(thumbImage == null){
+                    image = null;
+                    Toast.makeText(getApplicationContext(), "No Photo Inserted", Toast.LENGTH_SHORT).show();
+                }else {
+                    image = imageViewToByte(thumbImage);
+                }
                 Note note=new Note(description.getText().toString(),currentDateTime, image);
                 try{
                     sqliteHelper.addNote(note);
                     Toast.makeText(getApplicationContext(), "Added Successfully", Toast.LENGTH_SHORT).show();
                 }catch(Exception e){
                     e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Error! Select Image and Enter Notes", Toast.LENGTH_SHORT).show();
                 }
                 //sqliteHelper.addNote(note);
                 dateModified.setText(currentDateTime);

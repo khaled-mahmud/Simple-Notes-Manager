@@ -33,7 +33,10 @@ public class NotesListAdapter extends CursorAdapter {
         String datetime=cursor.getString(cursor.getColumnIndexOrThrow(SqliteHelper.KEY_MODIFIEDDATE));
         //byte datetime=cursor.getString(cursor.getColumnIndexOrThrow(SqliteHelper.KEY_MODIFIEDDATE));
         byte[] rawImage = cursor.getBlob(cursor.getColumnIndexOrThrow(SqliteHelper.KEY_IMAGE));
-        Bitmap bitmap = BitmapFactory.decodeByteArray(rawImage, 0, rawImage.length);
+        Bitmap bitmap = null;
+        if(rawImage != null){
+            bitmap = BitmapFactory.decodeByteArray(rawImage, 0, rawImage.length);
+        }
 
         String noteTitle=description.split("\n")[0];
         String notePreview="";
@@ -43,6 +46,10 @@ public class NotesListAdapter extends CursorAdapter {
         title.setText(noteTitle);
         preview.setText(notePreview);
         date.setText(datetime);
+        if(rawImage != null){
         thumbnail.setImageBitmap(bitmap);
+        }else{
+            thumbnail.setImageResource(R.drawable.no_images);
+        }
     }
 }
