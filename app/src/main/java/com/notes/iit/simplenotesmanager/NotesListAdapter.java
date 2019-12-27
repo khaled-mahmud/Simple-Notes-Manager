@@ -2,11 +2,16 @@ package com.notes.iit.simplenotesmanager;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.InputStream;
 
 public class NotesListAdapter extends CursorAdapter {
     public NotesListAdapter(Context context, Cursor cursor) {
@@ -23,8 +28,13 @@ public class NotesListAdapter extends CursorAdapter {
         TextView title = (TextView) view.findViewById(R.id.noteTitle);
         TextView preview = (TextView) view.findViewById(R.id.notePreview);
         TextView date = (TextView) view.findViewById(R.id.datetime);
+        ImageView thumbnail = (ImageView) view.findViewById(R.id.list_image);
         String description = cursor.getString(cursor.getColumnIndexOrThrow(SqliteHelper.KEY_DESCRIPTION));
         String datetime=cursor.getString(cursor.getColumnIndexOrThrow(SqliteHelper.KEY_MODIFIEDDATE));
+        //byte datetime=cursor.getString(cursor.getColumnIndexOrThrow(SqliteHelper.KEY_MODIFIEDDATE));
+        byte[] rawImage = cursor.getBlob(cursor.getColumnIndexOrThrow(SqliteHelper.KEY_IMAGE));
+        Bitmap bitmap = BitmapFactory.decodeByteArray(rawImage, 0, rawImage.length);
+
         String noteTitle=description.split("\n")[0];
         String notePreview="";
         if(description.contains("\n")) {
@@ -33,5 +43,6 @@ public class NotesListAdapter extends CursorAdapter {
         title.setText(noteTitle);
         preview.setText(notePreview);
         date.setText(datetime);
+        thumbnail.setImageBitmap(bitmap);
     }
 }

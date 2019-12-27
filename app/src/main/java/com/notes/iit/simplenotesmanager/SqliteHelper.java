@@ -46,11 +46,13 @@ public class SqliteHelper extends SQLiteOpenHelper {
     public static final String TABLE_NOTES ="note" ;
     public static final String KEY_DESCRIPTION ="description" ;
     public static final String KEY_MODIFIEDDATE ="date" ;
+    public static final String KEY_IMAGE ="image" ;
     public static final String SQL_TABLE_NOTES = " CREATE TABLE " + TABLE_NOTES
             + " ( "
             + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + KEY_DESCRIPTION + " TEXT, "
-            + KEY_MODIFIEDDATE + " STRING"
+            + KEY_MODIFIEDDATE + " STRING, "
+            + KEY_IMAGE + " BLOB"
             + " ) ";
 
     public SqliteHelper(Context context) {
@@ -77,13 +79,14 @@ public class SqliteHelper extends SQLiteOpenHelper {
 
         values.put(KEY_DESCRIPTION, note.description);
         values.put(KEY_MODIFIEDDATE, note.date);
+        values.put(KEY_IMAGE, note.image);
         db.insert(TABLE_NOTES, null, values);
     }
 
     public Cursor retriveAllNotesCursor() {
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cur =  db.rawQuery( "select rowid as _id,"+KEY_DESCRIPTION+","+KEY_MODIFIEDDATE+" from "+ TABLE_NOTES, null);
+        Cursor cur =  db.rawQuery( "select rowid as _id,"+KEY_DESCRIPTION+","+KEY_MODIFIEDDATE+","+KEY_IMAGE+" from "+ TABLE_NOTES, null);
         return cur;
     }
     public void addUser(User user) {
